@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+
+
+{% block style %}
+<style>
+  main {
+    margin-top: 40px;
+    border-radius: 2px;
+    height: calc(100% - 80px);
+    background: #333;
+    padding-top: 20px;
+  }
+  #chat-box {
+    overflow-y: auto;
+    height: calc(100% - 155px);
+  }
+  #chat-box::-webkit-scrollbar {
+    width: 10px;
+  }
+  #chat-box::-webkit-scrollbar-track {
+    background: #eee;
+  }
+  #chat-box::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  #chat-box::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+  .chat-card, textarea {
+    border: 1px solid black;
+    border-radius: 2px;
+    margin: 10px 10px 0 0;
+    padding: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .dark {
+    background-color: #444;
+  }
+  .light {
+    background-color: #555;
+  }
+  .chat-card::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .time {
+    float: right;
+    color: #aaa;
+    margin-top: -16px;
+    white-space: pre;
+  }
+  textarea {
+    background-color: white;
+    width: 100%;
+    resize: none;
+    border: 1px black solid;
+    outline: none;
+  }
+  button {
+    margin-top: 5px;
+    min-height: 38px;
+    border-radius: 2px;
+    width: 100%;
+  }
+</style>
+{% endblock %}
+
+
+{% block body %}
+<main class="container">
+  <div id="chat-box">
+    <h2 align="center">{{room}}</h2>
+  </div>
+  <textarea id="message" rows="2" maxlength="200" placeholder="Enter Your Message..." spellcheck="false"></textarea>
+  <button id="sendbutton" class="btn btn-primary">Send</button>
+</main>
+{% endblock %}
+
+
+{% block script %}
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/socket.io.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    var socket = io.connect("{{ipAddress}}"), nickname = "{{nickname}}", color = "light";
+    
+
+    {% for data in database %}
+      $("#chat-box").append('<div class="chat-card ' + color + '"><p><b>{{data.nickname}}:  </b>{{data.message}}</p><span class="time">{{data.date}}</span></div>');
+      if (color == "light") color = "dark";
+      else color = "light";
+    {% endfor %}
+
+
+    socket.on("message", data => {
+      room = data.split("|")[0];
+      nickname = data.split("|")[1];
+      date = data.split("|")[2];
+      message = data.slice(getMessage(data));
+      
+      if (room == "{{room}}") $("#chat-box").append('<div class="chat-card ' + color + '"><p><b>' + nickname + ':</b>  ' + message + '</p><span class="time">' + date + '</span></div>');
+      
+      if (color == "light") color = "dark";
+      else color = "light";
+
+      $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+    });
+
+
+    function getMessage(str) {
+      let numOfChars = 0;
+      for (let i = 0; i < str.length; i++) {
+        if (str[i] == "|") {
+          numOfChars += 1;
+          if (numOfChars == 3) return i + 1;
+        }
+      }
+    }
+
+
+    $("#sendbutton").click(() => {
+      if ($("#message").val()){
+        date = new Date().getDate() + "." + (new Date().getMonth() + 1) + "." + new Date().getFullYear() + "   " + new Date().getHours() + ':' + (new Date().getMinutes() < 10 ? "0" : "") + new Date().getMinutes()
+        socket.send("{{room}}|{{nickname}}|" + date + "|" + $("#message").val());
+        $("#message").val("");
+      }
+    });
+  });
+</script>
+{% endblock %}

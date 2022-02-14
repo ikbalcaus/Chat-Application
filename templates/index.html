@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+
+{% block style %}
+<style>
+  main {
+    width: 340px;
+    font-size: 15px;
+    position: relative;
+    left: 50%;
+    top: 32%;
+    transform: translate(-50%);
+    background-color: #333;
+    padding: 30px;
+    border-radius: 2px;
+  }
+  form {
+    margin-top: 20px;
+  }
+  .form-control, button {
+    border-radius: 2px; 
+    width: 100%;
+  }
+</style>
+{% endblock %}
+
+
+{% block body %}
+<main class="login-form">
+  <h2 class="text-center">Log in</h2> 
+  <form action="/" method="post"> 
+
+    <div class="form-group">
+      <input type="text" class="form-control" name="nickname" placeholder="Enter Your Nickname" maxlength="30" spellcheck="false" autocomplete="off" required>
+    </div>
+
+    <div class="form-group">
+      <select class="custom-select" name="room">
+        <option value="" selected hidden>Select Room</option>
+        <option value="Room 1">Room 1</option>
+        <option value="Room 2">Room 2</option>
+        <option value="Room 3">Room 3</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+  </form>
+</main>
+{% endblock %}
