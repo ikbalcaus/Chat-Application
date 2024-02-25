@@ -1,0 +1,8 @@
+.main {
+    float: left;
+    width: 500px;
+    margin: 25px 0;
+    position: relative;
+    left: calc(50% + 125px);
+    transform: translate(-50%);
+}
