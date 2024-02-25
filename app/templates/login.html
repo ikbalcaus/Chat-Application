@@ -1,0 +1,29 @@
+<html data-bs-theme="dark">
+	<head>
+		{% include "configuration.html" %}
+		<link rel="stylesheet" href="../static/css/signup-login.css">
+	</head>
+	<body>
+		{% include "alerts.html" %}
+		<form action="/login" method="post" class="main bg-body-tertiary">
+			<h1 class="big-text">Login</h1>
+			<input type="email" class="form-control input-field" name="email" placeholder="Email" data-bs-theme="light" spellcheck="false" autocomplete="off" required>
+			<input type="password" class="form-control input-field" name="password" placeholder="Password" pattern="{{password_regex}}" data-bs-theme="light" required>
+            <div class="row">
+                <div class="col d-flex justify-content-end">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input input-field" name="remember" id="remember" data-bs-theme="light">
+                        <label for="remember" class="form-check-label text-white">Remember me</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <a class="text-decoration-none" href="/forgot-password">Forgot password?</a>
+                </div>
+            </div>
+			<button class="form-control btn btn-primary mt-2">Submit</button>
+			<div class="text-center mt-2">
+				<a class="text-decoration-none" href="/signup">Don't have an account?</a>
+			</div>
+		</form>
+	</body>
+</html>

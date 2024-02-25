@@ -1,0 +1,97 @@
+.sidebar {
+	position: fixed;
+	width: 250px;
+	display: flex;
+	flex-direction: column;
+	padding: 16px;
+	float: left;
+}
+.brand {
+	font-size: 23px;
+	margin-left: 15px;
+	text-decoration: none;
+	color: white;
+}
+.friends {
+	height: calc(100vh - 275px);
+	overflow-y: auto;
+	margin-bottom: auto;
+	word-break: break-word;
+}
+.friends::-webkit-scrollbar {
+	width: 10px;
+}
+.friends::-webkit-scrollbar-track {
+	background: #eee;
+}
+.friends::-webkit-scrollbar-thumb {
+	background: #888;
+}
+.friends::-webkit-scrollbar-thumb:hover {
+	background: #555; 
+}
+.current {
+	background-color: #212529;
+}
+.active {
+	position: absolute;
+	top: 50%;
+	left: 100%;
+	transform: translate(-50%, -50%);
+	padding: 4px;
+	border-radius: 50%;
+}
+.nav-list {
+	list-style: none;
+	margin-left: -20px;
+}
+.nav-list li a, .nav-list li button {
+	width: 95%;
+	text-align: left !important;
+	color: white;
+	position: relative;
+	margin: 2px 0;
+}
+.nav-list li a:hover, .nav-list li button:hover {
+	background-color: #212529;
+	color: white;
+}
+.nav-btn {
+	display: none;
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	width: 40px;
+	height: 35px;
+	color: white;
+	background-color: #2B3035;
+}
+.nav-btn:hover {
+	color: white;
+	background-color: #2B3035;
+}
+
+@media (max-width: 750px) {
+	.sidebar {
+		position: relative;
+		width: 100%;
+	}
+	#expandable {
+		display: none;
+	}
+	.brand {
+		display: flex;
+		justify-content: center;
+	}
+	.friends {
+		height: auto;
+		max-height: 210px;
+	}
+	.nav-btn {
+		display: block;
+	}
+	.main {
+		left: 50% !important;
+		width: 75% !important;
+	}
+}

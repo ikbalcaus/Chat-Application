@@ -1,0 +1,54 @@
+<div class="sidebar bg-body-tertiary">
+  <button class="btn nav-btn" onclick="expandNavbar()">
+    <i class="fas fa-bars"></i>
+  </button>
+  <a href="/" class="brand">Chat Application</a>
+  <div id="expandable">
+    <hr>
+    <form action="/" method="post">
+      <ul class="friends nav-list">
+        {% for friend in friends %}
+          <li>
+            <button class="btn {{'current' if currentFriend == friend.username}}" value="{{friend.username}}" onclick="this.setAttribute('name', 'username')">
+              {{ friend.username }}
+              <span class="{{'active' if friend.session_id}} bg-warning"></span>
+            </button>
+          </li>
+        {% endfor %}
+      </ul>
+    </form>
+    <hr>
+    <ul class="nav-list">
+      <li>
+        <a href="/manage-friends" class="btn {{'current' if is_current_manage_friends}}">Manage Friends</a>
+      </li>
+      <li>
+        <a href="/settings" class="btn {{'current' if is_current_settings}}">Settings</a>
+      </li>
+      <li>
+        <a href="/logout" class="btn">Logout</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script src="../static/js/libraries/jquery.min.js"></script>
+<script>
+  let expanded;
+
+  function expandNavbar() {
+    expanded = !expanded;
+    if(expanded) {
+      $("#expandable").css("display", "none");
+    }
+    else {
+      $("#expandable").css("display", "block");
+    }
+  }
+
+  $(window).resize(() => {
+    if($(window).width() > 750) expanded = true;
+    else expanded = false;
+    expandNavbar();
+  });
+</script>

@@ -1,0 +1,38 @@
+<html data-bs-theme="dark">
+	<head>
+		{% include "configuration.html" %}
+		<link rel="stylesheet" href="../static/css/settings.css">
+	</head>
+	<body>
+		{% include "sidebar.html" %}
+		{% include "alerts.html" %}
+        <form action="/settings" method="post" id="settings" class="main bg-body-tertiary">
+			<h1 class="big-text">Settings</h1>
+			<input type="password" class="form-control input-field" name="old-password" placeholder="Old password" maxlength="30" pattern="{{password_regex}}" data-bs-theme="light" onchange="document.getElementById('old-password-hidden').value = this.value" required>
+			<input type="text" class="form-control input-field" name="new-username" placeholder="New username" maxlength="30" data-bs-theme="light" spellcheck="false" autocomplete="off">
+			<input type="password" class="form-control input-field" name="new-password" placeholder="New password" maxlength="30" pattern="{{password_regex}}" data-bs-theme="light">
+			<input type="password" class="form-control input-field" name="confirm-new-password" placeholder="Confirm new password" maxlength="30" pattern="{{password_regex}}" data-bs-theme="light">
+			<button class="form-control btn btn-primary mt-2">Submit</button>
+            <div class="text-center mt-2">
+				<a class="text-decoration-none delete-link" data-bs-toggle="modal" data-bs-target="#modal">Delete account?</a>
+			</div>
+        </form>
+		<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modal">Are you sure you want to delete your account?</h5>
+						<button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-footer">
+						<form action="/delete-account" method="POST">
+							<input type="hidden" id="old-password-hidden" name="password">
+							<button class="btn btn-primary">Yes</button>
+						</form>
+						<button class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

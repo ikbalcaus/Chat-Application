@@ -1,0 +1,48 @@
+<html data-bs-theme="dark">
+	<head>
+		{% include "configuration.html" %}
+		<link rel="stylesheet" href="../static/css/manage-friends.css">
+	</head>
+	<body>
+		{% include "sidebar.html" %}
+        <div class="main">
+			<form action="/manage-friends">
+				<div class="input-group">
+					<input type="search" class="form-control" name="username" placeholder="Search users" spellcheck="false" autocomplete="off">
+					<button class="btn btn-primary">
+						<i class="fas fa-search"></i>
+					</button>
+				</div>
+			</form>
+			{% if not friends and not not_friends %}
+				<h4 class="mt-4">Users not found</h4>
+			{% endif %}
+			{% if friends %}
+				<h4 class="mt-4">Friends</h4>
+				<form action="/manage-friends/remove" method="post">
+					{% for friend in friends %}
+					<div class="input-group mt-2">
+						<input type="text" class="form-control border-top-0 border-start-0" value="{{friend.username}}" readonly>
+						<button class="btn btn-primary" value="{{friend.username}}" onclick="this.setAttribute('name', 'username')">
+							<i class="fas fa-minus"></i>
+						</button>
+					</div>
+					{% endfor %}
+				</form>
+			{% endif %}
+			{% if not_friends %}
+				<h4 class="mt-4">Not friends</h4>
+				<form action="/manage-friends/add" method="post">
+					{% for not_friend in not_friends %}
+					<div class="input-group mt-2">
+						<input type="text" class="form-control border-top-0 border-start-0" value="{{not_friend.username}}" readonly>
+						<button class="btn btn-primary" value="{{not_friend.username}}" onclick="this.setAttribute('name', 'username')">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+					{% endfor %}
+				</form>
+			{% endif %}
+        </div>
+	</body>
+</html>

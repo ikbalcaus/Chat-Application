@@ -1,0 +1,52 @@
+<html data-bs-theme="dark">
+	<head>
+		{% include "configuration.html" %}
+		<link rel="stylesheet" href="../static/css/index.css">
+	</head>
+	<body>
+		{% include "sidebar.html" %}
+		<div class="main">
+			<div id="chat-box">
+				<h2 class="text-center my-3">{{current_friend}}</h2>
+				{% for message in messages %}
+					<div class="chat-message {{'light' if message.users.username == current_user else 'dark'}}"><p><b>{{message.users.username}}:  </b>{{message.message}}</p><span class="datetime">{{message.datetime}}</span></div>
+				{% endfor %}
+			</div>
+			<textarea id="text-box" rows="2" maxlength="200" placeholder="Enter your message..." spellcheck="false"></textarea>
+			<button id="btn-send" class="btn btn-primary" onclick="sendMessage()">Send</button>
+		</div>
+
+		<script src="../static/js/libraries/jquery.min.js"></script>
+		<script src="../static/js/libraries/socket.io.min.js"></script>
+		<script>
+			socketIO = io();
+
+			$("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+			$("#text-box").focus();
+
+			function sendMessage() {
+				if($("#text-box").val()) {
+					let datetime = 
+						new Date().getDate() + "." +
+						(new Date().getMonth() + 1)  + "." + 
+						new Date().getFullYear() + "  "  + 
+						new Date().getHours() + ":"  + 
+						(new Date().getMinutes() < 10 ? "0" + new Date().getMinutes(): new Date().getMinutes()) + ":" + 
+						(new Date().getSeconds() < 10 ? "0" + new Date().getSeconds(): new Date().getSeconds());
+					socketIO.emit("send_message", "{{current_friend}}", $("#text-box").val(), datetime);
+					$("#text-box").val("");
+					$("#text-box").focus();
+				}
+			}
+
+			socketIO.on("message_received", data => {
+				if(data.username == "{{current_user}}" || data.username == "{{current_friend}}") {
+					if(data.username == "{{current_user}}") color = "light";
+					else color = "dark";
+					$("#chat-box").append(`<div class="chat-message ${color}"><p><strong>${data.username}:  </strong>${data.message.replace(/</g, "&lt").replace(/>/g, "&gt")}</p><span class="datetime">${data.datetime}</span></div>`);
+					$("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+				}
+			});
+		</script>
+	</body>
+</html>
