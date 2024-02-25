@@ -1,0 +1,38 @@
+.main {
+    width: 340px;
+    font-size: 15px;
+    position: relative;
+    left: calc(50% + 100px);
+    top: 48%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    border-radius: 6px;
+}
+.big-text {
+    margin-bottom: 15px;
+}
+.input-field {
+    margin-bottom: 10px;
+    border: none;
+}
+.delete-link {
+    cursor: pointer;
+}
+.alert {
+    margin-left: 251px;
+}
+
+@media (max-width: 750px) {
+    .main {
+        float: left;
+        top: 0;
+        transform: translate(-50%);
+        margin: 25px 0;
+    }
+    .alert {
+        margin-left: 0;
+        position: absolute;
+        bottom: -2.5%;
+        width: 100%;
+    }
+}
